@@ -45,12 +45,14 @@ variable "location" {
 variable "cluster_id" {
   description = "The ID of the Bigtable cluster"
   type        = string
+  default = "bigtable-cluster1"
   
 }
 
 variable "zone" {
   description = "The zone for the Bigtable cluster"
   type        = string
+  default = "us-central1-a"
 }
 
 variable "num_nodes" {
