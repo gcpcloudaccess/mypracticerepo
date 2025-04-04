@@ -2,7 +2,8 @@ resource "google_bigtable_instance" "my_bigtable" {
   name         = var.instance_name        # The name of the Bigtable instance
 #   cluster_id   = var.cluster_id        # The ID for the cluster
   instance_type = var.instance_type                   # Can be "DEVELOPMENT" or "PRODUCTION"
-  display_name = "My Bigtable Instance"         # A friendly name for display
+  display_name = "My Bigtable Instance"        # A friendly name for display
+  deletion_protection = false
   project      = var.project_id             # Replace with your GCP project ID
 #   region       = "us-central1"                  # The region to host your Bigtable instance
 
