@@ -20,12 +20,12 @@ resource "google_bigtable_instance" "my_bigtable" {
     storage_type = var.cluster.storage_type
     zone    = var.cluster.zone
   
-   autoscaling_config {  
-      min_nodes = var.cluster.autoscaling_config.min_nodes
-      max_nodes = var.cluster.autoscaling_config.max_nodes
-      cpu_target = var.cluster.autoscaling_config.cpu_target
-      storage_target  = var.cluster.autoscaling_config.storage_target
-    } 
+  #  autoscaling_config {  
+  #     min_nodes = var.cluster.autoscaling_config.min_nodes
+  #     max_nodes = var.cluster.autoscaling_config.max_nodes
+  #     cpu_target = var.cluster.autoscaling_config.cpu_target
+  #     storage_target  = var.cluster.autoscaling_config.storage_target
+  #   } 
   }
 }
 
