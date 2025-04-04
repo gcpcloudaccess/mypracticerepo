@@ -42,36 +42,36 @@ variable "location" {
   default = "US"
 }
 
-# variable "cluster_id" {
-#   description = "The ID of the Bigtable cluster"
-#   type        = string
-#   default = "bigtable-cluster1"
-# }
-
-variable "cluster" {
-  type = object({
-    cluster_id = string
-    storage_type = string
-    zone = string
-    autoscaling_config= object({
-      min_nodes = number
-      max_nodes = number
-      cpu_target = number
-      storage_target  = number
-    })   
-  })
-  default = {  
-      cluster_id  = var.cluster_id
-      storage_type = var.storage_type
-      zone = var.zone
-      autoscaling_config = {  
-        min_nodes = 1
-        max_nodes = 2
-        cpu_target = 80
-        storage_target  =  1024 //(1 TiB)
-    }
- }  
+variable "cluster_id" {
+  description = "The ID of the Bigtable cluster"
+  type        = string
+  default = "bigtable-cluster1"
 }
+
+# variable "cluster" {
+#   type = object({
+#     cluster_id = string
+#     storage_type = string
+#     zone = string
+#     autoscaling_config= object({
+#       min_nodes = number
+#       max_nodes = number
+#       cpu_target = number
+#       storage_target  = number
+#     })   
+#   })
+#   default = {  
+#       cluster_id  = var.cluster_id
+#       storage_type = var.storage_type
+#       zone = var.zone
+#       autoscaling_config = {  
+#         min_nodes = 1
+#         max_nodes = 2
+#         cpu_target = 80
+#         storage_target  =  1024 //(1 TiB)
+#     }
+#  }  
+# }
 
 variable "zone" {
   description = "The zone for the Bigtable cluster"

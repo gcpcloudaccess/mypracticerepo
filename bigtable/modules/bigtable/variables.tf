@@ -35,24 +35,24 @@ variable "location" {
   type        = string
 }
 
-# variable "cluster_id" {
-#   description = "The ID of the Bigtable cluster"
-#   type        = string
-# }
+variable "cluster_id" {
+  description = "The ID of the Bigtable cluster"
+  type        = string
+}
 
-variable "cluster" {
-  type = object({
-    cluster_id = string
-    storage_type = string
-    zone = string
-    autoscaling_config= object({
-      min_nodes = number
-      max_nodes = number
-      cpu_target = number
-      storage_target  = number
-    })   
-  }) 
-} 
+# variable "cluster" {
+#   type = object({
+#     cluster_id = string
+#     storage_type = string
+#     zone = string
+#     autoscaling_config= object({
+#       min_nodes = number
+#       max_nodes = number
+#       cpu_target = number
+#       storage_target  = number
+#     })   
+#   }) 
+# } 
 
 variable "zone" {
   description = "The zone for the Bigtable cluster"
