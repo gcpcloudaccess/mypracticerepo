@@ -16,9 +16,9 @@ resource "google_bigtable_instance" "my_bigtable" {
 
   ### a cluster with auto scaling.
   cluster {
-    cluster_id   = var.cluster.cluster_id
-    storage_type = var.cluster.storage_type
-    zone    = var.cluster.zone
+    cluster_id   = var.cluster_id
+    storage_type = var.storage_type
+    zone         = var.zone
   
   #  autoscaling_config {  
   #     min_nodes = var.cluster.autoscaling_config.min_nodes
