@@ -8,7 +8,7 @@ module "bigtable_instance" {
   display_name   = "My Bigtable Instance"
   location       = var.location
   # cluster_id     = var.cluster_id
-    cluster = {
+  cluster = {
     cluster_id   = var.cluster.cluster_id
     storage_type = var.cluster.storage_type
     zone    = var.cluster.zone
