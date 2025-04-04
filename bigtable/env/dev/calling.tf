@@ -12,7 +12,7 @@ module "bigtable_instance" {
     cluster_id   = var.cluster.cluster_id
     storage_type = var.cluster.storage_type
     zone    = var.cluster.zone
-   autoscaling_config = {
+  autoscaling_config = {
       min_nodes = var.cluster.autoscaling_config.min_nodes
       max_nodes = var.cluster.autoscaling_config.max_nodes
       cpu_target = var.cluster.autoscaling_config.cpu_target
