@@ -1,6 +1,6 @@
 # modules/bigtable_instance/variables.tf
 
-variable "instance_name" {
+variable "instance_id" {
   description = "The name of the Bigtable instance"
   type        = string
 }
@@ -10,7 +10,7 @@ variable "project_id" {
   type        = string
 }
 
-variable "region" {
+variable "regions" {
   description = "The Google Cloud region"
   type        = string
 }
@@ -59,12 +59,12 @@ variable "zone" {
   type        = string
 }
 
-variable "num_nodes" {
-  description = "The number of nodes for the Bigtable cluster"
-  type        = number
-}
+# variable "nodes_per_cluster" {
+#   type    = number
+# }
 
-variable "storage_type" {
-  description = "The storage type for the Bigtable cluster. Valid values are 'HDD' or 'SSD'"
-  type        = string
-}
+
+# variable "storage_type" {
+#   description = "The storage type for the Bigtable cluster. Valid values are 'HDD' or 'SSD'"
+#   type        = string
+# }
