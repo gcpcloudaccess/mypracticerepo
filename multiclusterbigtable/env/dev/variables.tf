@@ -1,53 +1,52 @@
+variable "project_id" {
+  description = "The Google Cloud project ID"
+  type        = string
+  default = "pixelpoc"
+}
 
 variable "regions" {
   type    = list(string)
   default = ["us-central1", "us-east1"]
 }
 
-variable "nodes_per_cluster" {
-  type    = number
-  default = 3
-}
-
-variable "instance_id" {
-  type    = string
-  default = "my-bigtable-instance"
+variable "location" {
+  description = "The location of the Bigtable instance"
+  type        = string
 }
 
 # Variable values for cluster example
 variable "cluster" {
   default = {
-    cluster_id = "my-cluster"
-    storage_type = "HDD"
+    cluster_id = "bt-cluster-central"
+    storage_type = "SSD"
     zone = "us-central1-a"
     autoscaling_config = {
-      min_nodes      = 3
-      max_nodes      = 10
+      min_nodes      = 2
+      max_nodes      = 5
       cpu_target     = 0.75
       storage_target = 0.80
     }
   }
 }
 
-output "instance_id" {
-  value = google_bigtable_instance.example.instance_id
-}
+# variable "nodes_per_cluster" {
+#   type    = number
+#   default = 3
+# }
 
-output "cluster_ids" {
-  value = [for cluster in google_bigtable_cluster.example : cluster.cluster_id]
-}
-
-variable "regions" {
-  type    = list(string)
-  default = ["us-central1", "us-east1"]
-}
-
-variable "nodes_per_cluster" {
-  type    = number
-  default = 3
+variable "cluster_count" {
+  description = "Number of clusters in the Bigtable instance"
+  type        = number
+  default = 2
 }
 
 variable "instance_id" {
   type    = string
   default = "my-bigtable-instance"
+}
+
+variable "instance_type" {
+  description = "The type of Bigtable instance. Valid values are 'PRODUCTION' or 'DEVELOPMENT'"
+  type        = string
+  default = "PRODUCTION"
 }
