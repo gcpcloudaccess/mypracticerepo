@@ -1,15 +1,15 @@
-resource "google_bigtable_instance" "example" {
-  name          = var.instance_name
+resource "google_bigtable_instance" "bt-instance" {
+  name          = var.instance_id
   display_name  = var.display_name
   instance_type = var.instance_type  # Can be 'DEVELOPMENT' or 'PRODUCTION'
 }
 
 
-resource "google_bigtable_cluster" "example" {
-  for_each = toset(var.region)
+resource "google_bigtable_cluster" "bt-cluster" {
+  for_each = toset(var.regions)
 
   cluster_id    = var.cluster.cluster_id
-  instance_id   = google_bigtable_instance.example.instance_id
+  instance_id   = google_bigtable_instance.bt-instance.name
   zone          = var.cluster.zone
   storage_type  = var.cluster.storage_type
   
