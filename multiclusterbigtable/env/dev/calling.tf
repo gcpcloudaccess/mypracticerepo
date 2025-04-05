@@ -1,11 +1,11 @@
 
 module "bigtable_instance" {
-  source         = "../../modules/bigtable"
-  instance_name  = var.instance_name
+  source         = "../../modules/multicluster"
+  instance_id    = var.instance_id
   instance_type  = var.instance_type
   project_id     = var.project_id
-  region         = var.region
-  display_name   = "My Bigtable Instance"
+  regions        = var.regions
+  display_name   = var.display_name
   location       = var.location
 #   cluster_id     = var.cluster_id
   cluster = {
@@ -20,7 +20,7 @@ module "bigtable_instance" {
     } 
   }
   cluster_count  = var.cluster_count
-  zone           = var.zone
-  num_nodes      = var.num_nodes
-  storage_type   = "SSD"
+  zone           = var.cluster.zone
+#   nodes_per_cluster = var.nodes_per_cluster
+  # storage_type   = "SSD" 
 }
