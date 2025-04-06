@@ -1,0 +1,26 @@
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
+
+# Override files (local configuration)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Crash logs
+crash.log
+
+# Exclude IDE/editor specific files
+.vscode/
+.idea/
+*.swp
+
+# Sensitive credentials or configuration files
+*.pem
+*.key
+*.crt

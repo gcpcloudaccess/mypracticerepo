@@ -23,10 +23,10 @@ variable "cluster" {
     autoscaling_config = {
       min_nodes      = 2
       max_nodes      = 5
-      cpu_target     = 0.75
-      storage_target = 0.80
-    }
-  }
+      cpu_target     = 75
+      storage_target = 80
+   }
+ }
 }
 
 # variable "nodes_per_cluster" {
@@ -49,4 +49,10 @@ variable "instance_type" {
   description = "The type of Bigtable instance. Valid values are 'PRODUCTION' or 'DEVELOPMENT'"
   type        = string
   default = "PRODUCTION"
+}
+
+variable "display_name" {
+  description = "The display name of the Bigtable instance"
+  type        = string
+  default = "Bigtable instance with multicluster"
 }

@@ -3,5 +3,5 @@ output "instance_id" {
 }
 
 output "cluster_ids" {
-  value = [for cluster in google_bigtable_cluster.bt-cluster : cluster.cluster_id]
+  value = [for cluster in google_bigtable_instance.bt-instance : cluster.cluster_id]
 }

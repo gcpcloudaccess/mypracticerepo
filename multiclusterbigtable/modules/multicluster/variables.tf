@@ -12,7 +12,7 @@ variable "project_id" {
 
 variable "regions" {
   description = "The Google Cloud region"
-  type        = string
+  type        = list(string)
 }
 
 variable "cluster_count" {
