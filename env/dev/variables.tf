@@ -49,7 +49,7 @@ variable "instance_type" {
 variable "display_name" {
   description = "The display name of the Bigtable instance"
   type        = string
-  default = "Bigtable instance with multicluster"
+  default = "Bigtable instance"
 }
 
 #Variable definition for BigQuery
@@ -63,11 +63,11 @@ variable "location" {
 variable "dataset_id" {
   description = "The descrition for the dataset"
   type = string
-  default = "bq-dataset"
+  default = "bqdataset"
 }
 
 variable "table_id" {
   description = "The descrition for the table"
   type = string
-  default = "bq-table1"
+  default = "bqtable1"
 }
