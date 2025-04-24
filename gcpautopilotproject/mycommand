@@ -1,0 +1,874 @@
+Terraform
+Cloud secrets versions access latest —secret=db-credentials
+
+Use force unlock and terraform state rm command 
+
+ terraform force-unlock lock ID
+min_master_version = "1.28.2-gke.100"
+
+terraform import google_storage_bucket.obm-bucket bucket-name
+Terraform destroy -target 
+Terraform state rm 
+rm -r .terraform.lock.hcl
+terraform import google_artifact_registry_repository.gcp-artifactory project/us-central1/artifact-registry
+ terraform import module.gke.google_container_cluster.bnegke-dev-autopilot project/us-central1/cluster name
+
+terraform import module.cloud-sql-stg.google_sql_database_instance.sql_instance projects/ProjectID/instances/cloud-sql-instance
+
+TF_LOG=DEBUG terraform import module.cloud-sql-stg.google_sql_database_instance.sql_instance projects/<your_project_id>/instances/cloud-sql-instance
+
+terraform import google_storage_bucket.bne-bucket projects/project-id/buckets/bucket-name
+
+terraform apply -target=module.cloud-sql-stg -auto-approve 
+terraform apply -lock=false -target=module.memorystore.google_redis_instance.primary-redis-instance[0] -auto-approve
+terraform destroy -lock=false -target=module.cloud-sql-read-replica-dr.google_sql_database_instance.read_replica -auto-approve
+
+
+
+module.namespaces-dr-fi.kubernetes_namespace.namespace[“namespace-name]
+86
+module.namespaces-dr-fi.kubernetes_network_policy.ingress-allow-healthcheck[“namespace-name”]
+
+terraform import module.cloud-sql-read-replica.google_sql_database_instance.read_replica projects/projectID/instances/replica-instance
+
+Terraform import module.memorystore.google_redis_instance.primary-redis-instance projects/project-id/locations/us-central1/instances/memorystore instance
+
+terraform import -lock=false module.cloud-sql-read-replica-dr.google_sql_database_instance.read_replica projects/projectID/instances/instance-name
+terraform apply -lock=false -target=module.cloud-sql-read-replica-dr.google_sql_database_instance.read_replica -auto-approve -input=false
+
+
+
+
+ ==========================
+
+ Kubernetes
+
+gcloud container clusters describe cluster-name --zone us-central1 --project project-id
+ 
+kubectl get ingress -n obmstg
+ 
+kubectl get networkpolicy -n namespace-name
+ 
+kubectl describe networkpolicy ingress-allow-loadbalancer -n namespace-name
+ 
+kubectl get networkpolicy --all-namespaces
+ 
+kubectl describe deployments deployment-name -n namespace-name
+ 
+kubectl logs pods-name -n obmdev
+ 
+gcloud container clusters describe bne-autopilot-nonprod --zone us-central1 --project project-id
+ 
+gcloud container clusters list --project project-ID --zone us-central1
+ 
+kubectl get events --all-namespaces
+ 
+kubectl get nodes
+ 
+kubectl top nodes
+kubectl top pods --all-namespaces
+ 
+kubectl describe nodes
+
+kubectl config view --minify | grep server
+
+
+kubectl exec -n <NAMESPACE> <POD_NAME> --container <CONTAINER_NAME> -it -- /bin/bash
+
+kubectl describe pod/<pod name> -n <namespace name>
+
+Chmod -R 777 /folder
+
+kubectl get pods -n kube-system
+
+
+terraform state rm module.namespaces-dr.kubernetes_namespace.namespace
+
+Kubectl cp /path.txt <ns>/<pod-name>:pvc folder ptah
+
+
+
+kubectl get networkpolicy -n namespace
+kubectl apply -f networkpolicy.yml  
+
+kubectl edit egressnatpolicies default   
+
+
+==========================
+
+git config –-global user.name “ ”
+git config –-global user.email ” “
+git init
+git status
+git add Readme.txt
+git commit -m “Created a Readme.txt”
+git log
+git add -all
+git add *.txt
+git add docs/*.txt
+git checkout –license
+git reset –soft HEAD^
+git push -u origin master
+git clone https://github.com/madaan123/MyAlgorithms.git
+git branch Testing
+Git branch
+git checkout Testing
+git merge Testing
+git branch -d Testing
+git checkout -b admin
+git rebase
+git push origin --delete bne-dev
+
+git config pull.rebase false
+
+====================
+
+Cloud
+
+gcloud projects list
+Gcloud config set project “projectName”
+
+gcloud sql instances delete INSTANCE_NAME \
+--project=PROJECT_ID
+
+
+gcloud auth activate-service-account --key-file=“json key”
+
+
+
+gcloud storage cp <local_file_path> gs://<bucket_name>/<object_name>
+
+gcloud auth activate-service-account [ACCOUNT] --key-file=KEY_FILE
+
+gcloud auth activate-service-account SA_name --key-file=“path”
+
+GOOGLE_APPLICATION_CREDENTIALS= "SA path”
+
+export GOOGLE_APPLICATION_CREDENTIALS
+
+gcloud config set account `ACCOUNT`
+
+
+ 
+===============
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-name
+  namespace: app-dev
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment-name
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: deployment-name
+    spec:
+      volumes:
+        - name: service-volume
+          persistentVolumeClaim:
+            claimName: 
+        - name: app-reports
+          persistentVolumeClaim:
+            claimName: common-pvc
+        - name: polaris-pvc
+          persistentVolumeClaim:
+            claimName: 
+      containers:
+        - name: deployment-name
+          image: us-central1-docker.pkg.dev/project-id/artifact-registry/deployment-name:latest
+          ports:
+            - name: ingress-port
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: DB_CONNECTION
+              value: >-
+                
+            - name: APP_DB_NAME
+              value: 
+            - name: APP_PORT
+              value: '8080'
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: common-secret
+                  key: MYSQL_PASSWORD
+            - name: MYSQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: common-secret
+                  key: MYSQL_USERNAME
+            - name: DD_SERVICE_NAME
+              value: app-gateway-service-dev-hcc
+            - name: DD_TAGS
+              value: >-
+            - name: ENTERPRISE_PHI_SPLUNK_SERVERS
+              value: >-
+            - name: ENTERPRISE_PHI_SPLUNK_URI
+              value: 
+            - name: OPENSHIFT_SPLUNK_SECURE_INDEX
+              value: 
+            - name: OPENSHIFT_SPLUNK_SECURE_WHITELIST
+              value: >-
+            - name: OPENSHIFT_SPLUNK_SOURCETYPE
+              value: 
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev-gcp
+          resources:
+            limits:
+              cpu: '4'
+              memory: 6Gi
+            requests:
+              cpu: '2'
+              memory: 4Gi
+
+          volumeMounts:
+            - name: service-volume
+              mountPath: /config
+            - name: app-reports
+              mountPath: /logs
+            - name: app-reports
+              mountPath: /appReports
+            - name: service-volume
+              mountPath: /data
+            - name: app-reports
+              mountPath: /reports
+          livenessProbe:
+            httpGet:
+              path: /app-health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 300
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 15
+          readinessProbe:
+            httpGet:
+              path: /app-health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 300
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              drop:
+                - KILL
+                - MKNOD
+                - SYS_CHROOT
+      securityContext:
+        fsGroup: 2000
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+#      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 600
+
+=============
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+spec:
+  storageClassName: nfs-pv
+  accessModes: ReadWriteMany
+  capacity: 20Gi
+  nfs:
+    server: IP address of your NFS server
+    path: Path to the shared directory on the NFS server
+
+=========================
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nass-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard-rwo
+
+
+=================
+
+name: 'Terraform Deployment'
+
+on:
+  push:
+    branches: [ "branch name" ]
+  pull_request:
+    branches: [ "branch name" ]
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform Execution'
+    runs-on: { group: runner-name }
+    environment: prod
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4  
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Debug Directory Structure
+        run: |
+          echo "Listing files..."
+          ls -R
+          echo "Checking if prod directory exists..."
+          [ -d "prod/" ] && echo "Directory exists" || echo "Directory NOT found"
+
+      - name: Run Terraform Commands for the GCP infra
+        if: success()
+        working-directory: environments/prod
+        run: |
+          terraform init
+          terraform validate
+          terraform refresh -lock=false
+          terraform fmt
+          terraform plan -lock=false
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.SA_KEY }}
+
+==========================
+
+name: CI/CD Pipeline
+on:
+  push:
+    branches:
+      - branch-name
+  pull_request:
+    branches:
+      - branch-name
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: runner-name
+    outputs:
+      tag: ${{ steps.date.outputs.image_tag }}
+
+    env:
+      GAR_LOCATION: "us-central1"
+      PROJECT_ID: ""
+      REPOSITORY: ""
+      DOCKER_REPOSITORY: 
+      DEPLOYMENT_NAME: ''
+      IMAGE_NAME: 
+      SPRING_PROFILES_ACTIVE: 'stg' # Set your Spring profile as 'dev'
+      RUNTIME_VERSION: "4.6.7"
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['java']
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: Get current date
+        id: date
+        run: |
+          BRANCH_NAME=${GITHUB_REF_NAME}
+          SAN_BRANCH=$(echo "$BRANCH_NAME" | tr '/' '-')
+          echo "image_tag=$SAN_BRANCH"_"$(date +%Y-%m-%d_%H-%M)" >> $GITHUB_OUTPUT
+
+      - name: "Run static code analysis"
+        run: |
+          echo "Analyzing Java code..."
+
+      - name: "Set up Java 17"
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          architecture: x64
+
+      - name: "Cache Maven packages"
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+     # - name: "Set up Maven"
+     #   uses: stCarolas/setup-maven@v5
+     #   with:
+     #     maven-version: 3.8.6
+
+     # - name: "Maven Quality Scan"
+     #   uses: /maven-build-scan@v1
+     #   with:
+     #     sonar-token: ${{ secrets.SONAR_TOKEN }}
+     #     enable-codeql: false
+     #     enable-sonar: true
+     #     maven-command: "clean package install -DskipTests=true -U --file ./pom.xml --batch-mode --update-snapshots verify -Dmaven.repo.local=/home/runner/.m2/repository"
+     #     maven-sonar-command: "-DskipTests=true --file ./pom.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dmaven.repo.local=/home/runner/.m2/repository"
+     #   env:
+     #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+            maven-version: 3.8.2
+    
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+            # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
+            # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+          queries: security-extended,security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+        
+      - name: 'Authenticate to Google Cloud'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.SA_KEY }}'
+
+      - name: 'Set up GCP SDK'
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: 'Configure Docker for GCP'
+        run: |
+          gcloud auth configure-docker ${{ env.GAR_LOCATION }}-docker.pkg.dev
+        shell: bash
+
+      # Dynamically set image tag using Git SHA
+      - name: 'Set image tag'
+        id: tag
+        run: |
+          export IMAGE_TAG=${GITHUB_SHA::8}  # Use first 8 characters of commit hash
+          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+      - name: "Build Docker image"
+        run: |
+          docker build -t us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/registry-name/image-name:${{ steps.date.outputs.image_tag }} .
+          docker push us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/registry-name/image-name:${{ steps.date.outputs.image_tag }}
+
+      # - name: "TwistCLI Image Scan"
+      #   uses: optum-eeps/epl-actions/twistcli@v1
+      #   with:
+      #     prisma-user: ${{ secrets.SVC_BUILD_USER }}
+      #     image: us-central1-docker.pkg.dev/${{ env.PROJECT_ID
+      #       }}/bne-artifact-registry/${{ env.IMAGE_NAME }}:latest
+      #     password: ${{ secrets.SVC_BUILD_PWD }}
+
+
+      - name: "Upload Build Artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: target/*.jar
+          if-no-files-found: warn
+
+
+  deploy-dev:
+     runs-on: runner name
+     needs: [ build]
+     steps:
+       - name: "Checkout repository"
+         uses: actions/checkout@v4
+
+       - name: "Apply Dev Deployment"
+         run: |
+           sed -i "s|image: us-central1-docker.pkg.dev/project-name/artifact-registry/image name:.*|image: us-central1-docker.pkg.dev/project-id/artifact-registry/image:${{ needs.build.outputs.tag }} | g" infrastructure/deployment.yml
+           cat infrastructure/deployment.yml
+
+       - name: 'Authenticate to Google Cloud'
+         uses: google-github-actions/auth@v2
+         with:
+           credentials_json: '${{ secrets.SA_KEY }}'
+
+       - name: 'Set up GCP SDK'
+         uses: google-github-actions/setup-gcloud@v2
+
+       - name: "Set GKE credentials"
+         run: |
+           gcloud components install gke-gcloud-auth-plugin
+           gcloud container clusters get-credentials cluster-name --region us-central1 --project project-id
+
+       - name: "Deploy to GKE"
+         run: |
+           cd infrastructure/dev
+           kubectl apply -f pvc.yml -n namespace-name
+           kubectl apply -f deployment.yml -n namespace-name
+           kubectl apply -f service.yml -n namespace-name
+
+=========================================
+
+# Terraform GCP Cloud SQL Module. This Terraform module creates a Cloud SQL instance on Google Cloud Platform.
+
+module "registry" {
+  source                = "../../modules/artifact-registry"
+  project_id            = var.project_id
+  repository_format     = var.repository_format
+  location              = var.location_artifact
+  repository_description = var.repository_description
+  repository_name        = var.repository_name
+  keep_tag_prefixes      = var.keep_tag_prefixes
+  labels = var.labels
+}
+
+module "gcs_bucket" {
+  source            = "../../modules/bne-gcs"
+  project_id        = var.project_id # "your-gcp-project-id"
+  region            = var.region #"us-central1"
+  location          = var.location
+  bucket_name       =var.bucket_name
+  storage_class     = var.storage_class
+}
+
+module "cloud-sql" {
+  source                = "../../modules/cloud-sql"
+  project_id            = var.project_id # "your-gcp-project-id"
+  region                = var.region #"us-central1"
+  instance_name         = var.instance_name
+  database_version      = var.database_version
+  deletion_protection = var.deletion_protection
+  instance_tier         = var.instance_tier
+  edition               = var.edition
+  backup_configuration  = var.backup_configuration
+  allowed_consumer_projects = var.allowed_consumer_projects
+  availability_type     = var.availability_type
+  database_name         = var.database_name
+  db_users              = var.db_users
+  environment           = var.environment
+  shared_vpc_project_id = var.shared_vpc_project_id
+  vpc_name              = var.shared_vpc_network
+}
+
+module "gke" {
+  source                 = "../../modules/gke"
+  project_id             = var.project_id
+  region                 = var.region
+  cluster_name           = var.cluster_name
+  # shared_vpc_network = var.shared_vpc_network
+  network                = var.network
+  subnetwork             = var.subnetwork
+  # environment            = var.environment
+  deletion_protection    = var.deletion_protection
+  # authorized_network     = var.authorized_network
+  #   master_ipv4_cidr_block = var.master_ipv4_cidr_block
+  secondary_range_name   = var.secondary_range_name
+}
+
+module "namespaces" {
+  #  depends_on = [module.gke-cluster]
+  source = "../../modules/namespaces"
+  project_id = var.project_id
+  region = var.region
+  cluster_name = var.cluster_name
+  namespaces = var.namespaces
+}
+
+module "cloud-sql-read-replica" {
+  source                = "../../modules/cloud-sql-read-replica"
+  project_id            = var.project_id # "your-gcp-project-id"
+  instance_name         = var.instance_name
+  replica_region        = var.replica_region #"us-central1"
+  read_replica_name     = var.read_replica_name
+  database_version      = var.database_version
+  instance_tier         = var.instance_tier
+  edition               = var.edition
+  backup_configuration_read  = var.backup_configuration_read
+  allowed_consumer_projects = var.allowed_consumer_projects
+  availability_type     = var.availability_type
+  environment           = var.environment
+  # sql_read_replica_name = var.sql_read_replica_name
+  shared_vpc_project_id = var.shared_vpc_project_id
+  vpc_name              = var.shared_vpc_network
+}
+
+
+module "memorystore" {
+  source            = "../../modules/redis-memorystore"
+  project_id        = var.project_id
+  region            = var.region #"us-central1"
+  #   read_region       = var.read_region
+  location_id       = var.location_id
+  alternate_location_id = var.alternate_location_id
+  redis_primary_instance_name         = var.redis_primary_instance_name
+  tier           = var.tier
+  memory_size_gb = var.memory_size_gb
+  shared_vpc_network = var.shared_vpc_network
+  #   redis_version     = var.redis_version #"REDIS_6_X"
+  #display_name      = "Terraform Test Instance"
+  reserved_ip_range = var.reserved_ip_range
+  replica_count     = var.replica_count
+  # environment = var.environment
+  shared_vpc_project_id = var.shared_vpc_project_id
+}
+
+===============================
+
+# Terraform module to create artifact registry 
+
+resource "google_artifact_registry_repository" "gcp-artifactory" {
+  project       = var.project_id
+  location      = var.location
+  repository_id = var.repository_name
+  description   = "Docker Images and Helm Charts Repository"
+  format        = "DOCKER"
+  cleanup_policy_dry_run = false
+}
+
+===================================
+resource "google_storage_bucket" "bne-bucket" {
+  name = var.bucket_name
+  project = var.project_id
+  location = var.location
+
+lifecycle {
+  prevent_destroy = false
+}
+
+versioning {
+  enabled = true
+}
+
+storage_class = var.storage_class
+uniform_bucket_level_access = true
+
+}
+
+==================================
+#This setup will create a Cloud SQL instance, databases with the super user and password stored securely in GCP Secret Manager.
+
+provider "google" {
+  project = var.project_id
+  region  = var.region
+}
+
+resource "google_project_service" "cloud_sql_admin_api" {
+  project = var.project_id
+  service = "sqladmin.googleapis.com"
+}
+
+
+resource "google_sql_database_instance" "sql_instance" {
+  name                = var.instance_name
+  database_version    = var.database_version
+  region              = var.region
+  deletion_protection = true
+
+  settings {
+    tier = var.instance_tier
+    edition = var.edition # "ENTERPRISE_PLUS"
+    availability_type = var.availability_type  # Enable HA
+    #     memory            = 200 * 1024 * 1024 * 1024
+
+    backup_configuration {
+      enabled                           = var.backup_configuration.enabled
+      start_time                        = var.backup_configuration.start_time
+      binary_log_enabled                = var.backup_configuration.binary_log_enabled
+      location                          = "us"
+    }
+
+    data_cache_config {
+      data_cache_enabled = true
+    }
+
+    ip_configuration {
+      ipv4_enabled = false
+      ssl_mode    = "ENCRYPTED_ONLY"
+
+      psc_config {
+        psc_enabled = true
+        allowed_consumer_projects = var.allowed_consumer_projects
+      }
+
+    }
+    database_flags {
+      name  = "lower_case_table_names"
+      value = "1"
+    }
+
+
+  }
+}
+
+
+# Create databases
+resource "google_sql_database" "databases" {
+  count = length(var.database_name)
+  name     = var.database_name[count.index]
+  instance = google_sql_database_instance.sql_instance.name
+}
+
+resource "google_sql_user" "db_users" {
+  name     = var.db_users
+  instance = google_sql_database_instance.sql_instance.name
+}
+
+=================================
+
+# Purpose: Create a GKE cluster with autopilot enabled
+data "google_client_config" "default" {}
+
+provider "google" {
+  project = var.project_id
+  region  = var.region
+}
+
+# terraform {
+#   required_version = ">=1.6.5"
+# }
+resource "google_container_cluster" "bnegke-dev-autopilot" {
+  name                = var.cluster_name
+  project             = var.project_id
+  location            = var.region
+  deletion_protection = var.deletion_protection
+  enable_autopilot    = true
+  # min_master_version  = "1.31.6-gke.1020000"
+  network             = var.network
+  subnetwork          = var.subnetwork
+
+
+  vertical_pod_autoscaling {
+    enabled = true
+  }
+  private_cluster_config {
+    enable_private_endpoint = false
+    enable_private_nodes    = true
+  }
+
+  node_pool_auto_config {
+    network_tags {
+      tags = ["us-east4"]
+    }
+  }
+
+  ip_allocation_policy {
+    cluster_secondary_range_name = var.secondary_range_name
+  }
+
+  release_channel {
+    channel = "REGULAR"
+  }
+
+  master_authorized_networks_config {
+
+    cidr_blocks {
+      display_name = ""
+      cidr_block   = ""
+    }
+
+
+  }
+}
+
+=================================
+
+data "google_client_config" "default" {}
+
+data "google_container_cluster" "bnegke-dev-autopilot" {
+  project = var.project_id
+  location  = var.region
+  name     = var.cluster_name
+}
+
+provider "kubernetes" {
+  host                   = "https://${data.google_container_cluster.bnegke-dev-autopilot.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(data.google_container_cluster.bnegke-dev-autopilot.master_auth[0].cluster_ca_certificate)
+}
+
+# # Create a namespace
+resource "kubernetes_namespace" "namespace" {
+  for_each = toset(var.namespaces)
+
+  metadata {
+    name = each.key
+  }
+}
+
+resource "kubernetes_network_policy" "ingress_default_deny" {
+  for_each = toset(var.namespaces)
+  metadata {
+    name      = "ingress-default-deny"
+    namespace = each.key
+  }
+
+  spec {
+    policy_types = ["Ingress"]
+    pod_selector {}
+
+    ingress {
+      from {
+        pod_selector {}
+      }
+    }
+  }
+}
+
+
+===========================
+provider "google" {
+  project = var.project_id
+  region  = var.region
+}
+
+resource "google_project_service" "memorystore" {
+  project = var.project_id
+  service = "redis.googleapis.com" # Enable the redis API
+}
+
+resource "google_redis_instance" "primary-redis-instance" {
+  count          = length(var.redis_primary_instance_name)
+  name           = var.redis_primary_instance_name[count.index]
+  project        = var.project_id
+  tier           = var.tier
+  memory_size_gb = var.memory_size_gb
+  region         = var.region
+  location_id    = var.location_id
+  authorized_network = var.shared_vpc_network
+  display_name      = "Terraform Instance"
+  reserved_ip_range = var.reserved_ip_range
+  replica_count     = var.replica_count
+  # environment     = var.environment
+  read_replicas_mode = "READ_REPLICAS_ENABLED"
+  connect_mode       = "PRIVATE_SERVICE_ACCESS"
+  # labels         = var.labels
+
+
+  lifecycle {
+    prevent_destroy = false
+  }
+
+  # maintenance policy
+}
+
+
+
+
+
