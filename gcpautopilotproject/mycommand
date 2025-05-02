@@ -869,6 +869,36 @@ resource "google_redis_instance" "primary-redis-instance" {
 }
 
 
+KSA:
+gcloud container clusters update CLUSTER_NAME \
+    --workload-pool=PROJECT_ID.svc.id.goog \
+    --location=CLUSTER_LOCATION
+
+gcloud iam service-accounts add-iam-policy-binding GSA_NAME@PROJECT_ID.iam.gserviceaccount.com \
+  --role="roles/iam.workloadIdentityUser" \
+  --member="serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]"
+
+kubectl annotate serviceaccount KSA_NAME \
+  --namespace NAMESPACE \
+  iam.gke.io/gcp-service-account=GSA_NAME@PROJECT_ID.iam.gserviceaccount.com
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: KSA_NAME
+  namespace: NAMESPACE
+---
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      serviceAccountName: KSA_NAME
+      containers:
+      - name: your-app
+        image: gcr.io/your-image
+
+
 
 
 
