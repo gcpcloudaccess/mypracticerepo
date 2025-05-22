@@ -1,3 +1,3 @@
 locals {
-  secrets_json = jsondecode(file("/vaultsecrets.json"))
+  secrets_json = jsondecode(file("vaultsecrets.json"))
 }
