@@ -1,6 +1,7 @@
 variable "secrets_json" {
-  default = jsonencode(jsondecode(file("${path.module}/vaultsecrets.json")))
+  default = jsonencode(jsondecode(file("C:/Users/Myra Sharma/OneDrive/Desktop/Terraoform Projects/mypracticerepo/vaultsecrets.json")))
 }
+
 
 
 variable "my-app-secret" {
