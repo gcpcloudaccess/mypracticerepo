@@ -9,5 +9,5 @@ resource "aws_secretsmanager_secret" "vault-secrets" {
 
 resource "aws_secretsmanager_secret_version" "my_secret_version" {
   secret_id     = aws_secretsmanager_secret.vault-secrets.id
-  secret_string = var.secrets_json
+  secret_string = jsonencode(local.secrets_json)
 }
