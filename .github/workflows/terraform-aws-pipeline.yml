@@ -45,4 +45,4 @@ jobs:
         # For production, replace above with manual approval step
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve -target=aws_secretsmanager_secret.vault-secrets
