@@ -1,0 +1,101 @@
+resource "google_alloydb_cluster" "this" {
+  cluster_id     = var.cluster_id
+  region         = var.region
+  network_config {
+    network = var.network
+  }
+
+  labels = var.labels
+
+  encryption_config {
+    kms_key_name = var.kms_key_name
+  }
+
+  initial_user {
+    user     = var.db_user
+    password = var.db_password
+  }
+}
+
+resource "google_alloydb_instance" "primary" {
+  cluster       = google_alloydb_cluster.this.name
+  instance_id   = var.instance_id
+  instance_type = "PRIMARY"
+  region        = var.region
+
+  machine_config {
+    cpu_count = var.cpu_count
+  }
+
+  labels = var.labels
+}
+
+variable "cluster_id" {
+  description = "ID for the AlloyDB cluster"
+  type        = string
+}
+
+variable "instance_id" {
+  description = "ID for the primary instance"
+  type        = string
+}
+
+variable "region" {
+  description = "Region where AlloyDB will be deployed"
+  type        = string
+}
+
+variable "network" {
+  description = "VPC network name (in format: projects/{project}/global/networks/{network})"
+  type        = string
+}
+
+variable "labels" {
+  description = "Labels to apply to resources"
+  type        = map(string)
+  default     = {}
+}
+
+variable "db_user" {
+  description = "Initial database user"
+  type        = string
+}
+
+variable "db_password" {
+  description = "Password for the initial user"
+  type        = string
+  sensitive   = true
+}
+
+variable "cpu_count" {
+  description = "Number of CPUs for the instance"
+  type        = number
+  default     = 2
+}
+
+variable "kms_key_name" {
+  description = "KMS key to use for encryption"
+  type        = string
+  default     = null
+}
+
+output "cluster_name" {
+  value = google_alloydb_cluster.this.name
+}
+
+output "instance_name" {
+  value = google_alloydb_instance.primary.name
+}
+
+module "alloydb" {
+  source      = "./modules/alloydb"
+  cluster_id  = "my-alloydb-cluster"
+  instance_id = "primary-instance"
+  region      = "us-central1"
+  network     = "projects/my-project/global/networks/my-vpc"
+  db_user     = "admin"
+  db_password = "securepassword123"
+  labels = {
+    env = "dev"
+  }
+}
