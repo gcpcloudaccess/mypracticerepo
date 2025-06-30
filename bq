@@ -1,0 +1,45 @@
+
+Manish Sharma <manish.sharma141121@gmail.com>
+Fri, Jun 27, 3:31 PM (3 days ago)
+to manish.sharma14
+
+resource "google_bigquery_reservation" "main" {
+  name                     = "my-reservation"
+  location                 = "US"
+  slot_capacity            = 1000                     # Number of slots
+  ignore_idle_slots        = true                     # Allow others to use unused slots
+  edition                  = "ENTERPRISE"             # Edition: STANDARD, ENTERPRISE, ENTERPRISE_PLUS
+}
+
+resource "google_bigquery_capacity_commitment" "main" {
+  slot_count     = 1000
+  location       = "US"
+  plan           = "FLEX"  # Options: FLEX, MONTHLY, ANNUAL, THREE_YEAR
+  renewal_plan   = "FLEX"  # Optional: default same as `plan`
+  commitment_id  = "my-capacity"
+}
+
+resource "google_bigquery_assignment" "main" {
+  job_type         = "QUERY"       # or PIPELINE, ML_EXTERNAL
+  assignee         = "projects/${var.project_id}"
+  reservation      = google_bigquery_reservation.main.id
+  location         = "US"
+}
+
+output "reservation_id" {
+  value = google_bigquery_reservation.main.id
+}
+
+output "commitment_plan" {
+  value = google_bigquery_capacity_commitment.main.plan
+}
+
+module "bq_reservation" {
+  source = "./modules/bigquery_reservation"
+
+  project_id   = "my-gcp-project"
+  location     = "US"
+  slot_count   = 1000
+  plan         = "ANNUAL"
+  edition      = "ENTERPRISE"
+}
