@@ -898,6 +898,9 @@ spec:
       - name: your-app
         image: gcr.io/your-image
 
+---------------
+teams:
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_ZjM0YjE3YzktZTRmNi00N2M5LTk5MGMtNzVmMTkwMWZlOTk0%40thread.v2/0?context=%7b%22Tid%22%3a%221e9b61e8-e590-4abc-b1af-24125e330d2a%22%2c%22Oid%22%3a%22ead59fce-2b6a-498f-9147-6b66ad83f524%22%7d
 
 
 
