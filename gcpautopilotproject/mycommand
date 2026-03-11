@@ -902,5 +902,144 @@ spec:
 teams:
 https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmeetup-join%2F19%3Ameeting_ZTVkODA1YzctN2MyMS00ZmExLWI2OGEtYjFmNmY0ZTI0NjNj%40thread.v2%2F0%3Fcontext%3D%257b%2522Tid%2522%253a%25221e9b61e8-e590-4abc-b1af-24125e330d2a%2522%252c%2522Oid%2522%253a%2522ead59fce-2b6a-498f-9147-6b66ad83f524%2522%257d%26anon%3Dtrue&type=meetup-join&deeplinkId=593a1e3e-08fd-4986-89e9-6efe88ce2ff1&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true
 
+-----------------
+
+Agentic-AI ChatBot
+
+ai-cicd-agent
+│
+├── app
+│   └── Dockerfile
+│
+├── ai-agent
+│   ├── analyze_logs.py
+│   └── slack_bot.py
+│
+├── requirements.txt
+│
+└── .github
+    └── workflows
+        └── ai-build.yml
+
+
+.github/workflows/ai-build.yml
+
+name: AI CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ai-demo . 2>&1 | tee build.log
+        continue-on-error: true
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+
+
+ai-agent/analyze_logs.py
+
+import os
+from openai import OpenAI
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+with open("build.log", "r") as f:
+    logs = f.read()
+
+prompt = f"""
+You are a DevOps SRE assistant.
+
+Analyze the CI/CD logs and explain:
+1. What failed
+2. Why it failed
+3. How to fix it
+
+Logs:
+{logs}
+"""
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role":"user","content":prompt}]
+)
+
+print(response.choices[0].message.content)
+
+
+ai-agent/slack_bot.py
+
+from slack_bolt import App
+import requests
+
+app = App(token="SLACK_BOT_TOKEN")
+
+@app.command("/cicd")
+
+def cicd_command(ack, respond):
+    ack()
+
+    respond("Analyzing latest CI pipeline...")
+
+    # Example GitHub API call
+    url = "https://api.github.com/repos/ORG/REPO/actions/runs"
+    data = requests.get(url).json()
+
+    latest = data["workflow_runs"][0]
+
+    respond(f"Latest build status: {latest['conclusion']}")
+
+
+Slack conversation:
+
+User:
+ /cicd why did build fail?
+
+Bot:
+ CI pipeline failed.
+
+Reason:
+ Docker build error.
+
+Error:
+ requirements.txt missing dependency flask.
+
+Fix:
+ Add flask==3.0.0
+
+
+-------
+
+User:
+ /cicd why did build fail?
+
+Bot:
+ CI pipeline failed.
+
+Reason:
+ Docker build error.
+
+Error:
+ requirements.txt missing dependency flask.
+
+Fix:
+ Add flask==3.0.0
 
 
